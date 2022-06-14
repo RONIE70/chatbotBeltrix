@@ -1,5 +1,5 @@
 <?php
-//ession_destroy();
+//session_destroy();
 session_start();
 
 
@@ -24,9 +24,9 @@ if(!isset($_SESSION['superior'])){
 //$check_data = "SELECT * FROM menuOpciones WHERE idSuperior = $getMesg";
 if ("0" != $_POST['text']) {
     $check_data = "SELECT
-                        *
+                        mo.*
                     FROM 
-                        menuOpciones 
+                        menuOpciones mo 
                     WHERE 
                         idSuperior = 
                             (SELECT idMenu FROM menuopciones o 
@@ -49,7 +49,7 @@ $run_query = mysqli_query($conn, $check_data) or die("No es una opción válida"
 if(mysqli_num_rows($run_query) > 0){
     while
     ($fetch_data = mysqli_fetch_array($run_query, MYSQLI_ASSOC)){
-        //almacenando la reproducción en una variable que enviaremos a ajax
+        
         if ("0" == $_POST['text']) {
             $_SESSION['superior']='is null';
         }else{
@@ -60,7 +60,50 @@ if(mysqli_num_rows($run_query) > 0){
         }
         echo "0- Volver al Menú Anterior";
 }else{
-    echo "Disculpa, no entendi!";
+
+    if ("0" != $_POST['text']) {
+        $check_data = "SELECT
+                            mo.*
+                        FROM 
+                            menuOpciones mo 
+                        WHERE 
+                            idSuperior = 
+                                (SELECT idMenu FROM menuopciones o 
+                                WHERE o.idsuperior ".$_SESSION['superior']." 
+                                AND nroOpcion = ".$_SESSION['nroOpcion'].")";
+    }else{
+        $check_data = "SELECT
+                            *
+                        FROM 
+                            menuOpciones 
+                        WHERE 
+                            idSuperior is null";
+    
+    }
+   // echo($_POST['text']. 'este es el numero ingresado');
+   // echo($_SESSION['superior'].'este es el superior');
+   $sql = "SELECT
+                    idMenu
+                    FROM 
+                    menuOpciones mo 
+                    WHERE 
+                    idSuperior ".$_SESSION['superior']." 
+                        AND nroOpcion = ".$_POST['text'];
+    //echo $sql;
+    $run_query = mysqli_query($conn, $sql) or die("No es una opción válida");
+    
+    if(mysqli_num_rows($run_query) > 0){
+        while
+        ($fetch_menuid = mysqli_fetch_array($run_query, MYSQLI_ASSOC)){
+            echo('aca va una accion: '.$fetch_menuid['idMenu']);
+            
+        }
+    }else{
+        echo "Disculpa, no entendi!";
+    }
+    //echo "Disculpa, no entendi!";
+
 }
+
 
 ?>
