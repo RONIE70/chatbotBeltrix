@@ -88,6 +88,7 @@
                     success: function(result){
                         $replay = '<div class="bot-inbox inbox"><div class="icon"><img src="./images/chat.png" ></div><div class="msg-header"><p>'+ result +'</p></div></div>';
                         $(".form").append($replay);
+                        //$(".form").append($server_time);
                         //console.log($replay);
                         // cuando el chat baja, la barra de desplazamiento llega automáticamente al final
                         $(".form").scrollTop($(".form")[0].scrollHeight);

@@ -1,11 +1,11 @@
 <?php
 date_default_timezone_set("America/Argentina/Buenos_Aires");
-$server_time = date ('Y-m-d H:i:s');
+$server_time = date ('H:i:s');
 
 // coneccion a la base 
-$conn = mysqli_connect("localhost", "root", "", "chatbotprueba") or die("Database Error");
+$conn = mysqli_connect("localhost", "root", "", "chatbot") or die("Database Error");
 
-/*class AccesoDatos
+class AccesoDatos
 {
     private static $ObjetoAccesoDatos;
     private $objetoPDO;
@@ -47,6 +47,6 @@ $conn = mysqli_connect("localhost", "root", "", "chatbotprueba") or die("Databas
     }
 
 }
-*/
+
 
 ?>
