@@ -1,0 +1,159 @@
+<?php
+session_start();
+include_once ("./clases/AccesoDatos.php");
+include_once ("./clases/MenuOpcion.php");
+
+
+$consulta = MenuOpcion::TraerOpciones();
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Chatbot Instituto Beltran</title>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> 
+    
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+    <link rel="stylesheet" href="./estilos/estilo.css">
+
+
+<script type="text/javascript">
+var cadena, cod, respuesta;  
+var tipo = /materia?s||carrera?s||oficio?s/i;
+
+var tener = RegExp("(inscribo|inscribir|inscripciones|inscripcion|anotar|anoto|anotarse|inscripción|inscribirse)");
+
+function evaluarPregunta(){
+    cadena = document.getElementById("data").value;
+    //cadena = cadena.toUpperCase();
+
+    document.getElementById("resultado1").innerHTML = tener.test(cadena);
+    document.getElementById("resultado2").innerHTML = tipo.test(cadena);
+
+    if(tipo.test(cadena)==true && tener.test(cadena)==true){
+        cod = 4;
+        alert(cod);
+        responder();
+    }
+        insertarPregunta(cadena);
+    } 
+function responder(){
+    var mensaje="";
+ switch (cod){
+    case 4:
+    mensaje ="fijate vos";
+    break;    
+ }
+ document.getElementById("resultado").innerHTML = mensaje;
+       
+}
+function insertarPregunta(cadena){
+
+}
+</script>
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="title">
+                <div class="titulo">
+                    <div class="beltran">INSTITUTO TECNOLOGICO BELTRAN</div>
+                </div>
+        </div>
+        
+        <div class="form">
+            <div class="bot-inbox inbox">
+                    <div class="icon">
+                        <img src="./imagenes/chat.png" >
+                    </div>
+                    <div class="msg-header">
+                        <p>Soy  Beltrix , 
+                        tu  asistente  virtual . . .
+                        Elegi una opción?</p>
+                    
+                        <form enctype="multipart/form-data" action="./back/mensaje.php" method="POST">
+                        <?php 
+                        foreach ($consulta as $row) {
+                        ?>
+                        
+                        <div class="option">
+                            <?php echo $row [3];
+                            echo" - ";
+                            echo $row [1];?></div>
+                            <?php
+                            }
+                            ?>
+                            <div class="option">
+                            <?php echo "0- Volver al Menú Principal";?></div>
+                        </form>
+                    </div>
+            </div> 
+                             
+    </div>
+      
+    <script>
+        $(document).ready(function(){
+            $("#send-btn").on("click", function(){
+                //$("#formPreg").submit();
+                $value = $("#data").val();
+                $resultado = $("#resultado").html();
+                //alert($value);
+                $(".form").append('<div class="user-inbox inbox"><div class="icon"><img src="./imagenes/usuarios.jpg" ></div><div class="msg-header"><p>'+ $value +'</p></div>');//$msg
+                $("#data").val('');
+                
+
+                // iniciar el código ajax 
+                $.ajax({
+                    url: 'back/mensaje.php',
+                    type: 'POST',
+                    data: 'text='+$value,
+                    
+                    success: function(result){
+                        $replay = '<div class="bot-inbox inbox"><div class="icon"><img src="./imagenes/chat.png" ></div><div class="msg-header"><p>'+ result +'</p></div></div>';
+                        $(".form").append($replay);
+                        if ($resultado){
+                        $(".form").append('<div class="bot-inbox inbox"><div class="icon"><img src="./imagenes/chat.png" ></div><div class="msg-header"><p>'+ $resultado +'</p></div>')    
+                        }
+                        $(".form").scrollTop($(".form")[0].scrollHeight);
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <p id="resultado" style="visibility:hidden;"></p>   
+    <div class="typing-field">
+        
+                <form id="formPreg" enctype="multipart/form-data" action="back/insertarPreguntaHacer.php" method="POST">
+                <div class="input-data">
+                    <input name="data" id="data" placeholder="Escribe aqui.." required>                    
+                    <button type="submit" id="send-btn" onclick="evaluarPregunta()">Enviar</button>
+                    </div>   
+                </form> 
+                   
+    </div>
+    
+    <p style="visibility:hidden;" id="resultado1"></p>
+
+    <p style="visibility:hidden;" id="resultado2"></p>
+    
+    
+        
+    
+
+    
+    <div class="boton"><a href="./back/logout.php">X</a></div>
+</body>
+</html>
