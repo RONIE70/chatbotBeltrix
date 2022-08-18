@@ -23,6 +23,8 @@ class Usuario
           
           $_SESSION['usuario_id']=$fila['id'];
           $_SESSION['usuario_nombre']=$fila['nombre'];
+          $_SESSION['usuario_foto']=$fila['foto_usuario'];
+
             echo $fila['nombre'];
             echo '<br><br><img class="profile-img" src="'.$fila['foto_usuario'].'"  
             style="align:center;border-radius: 100px;max-width:50%;width:70px;height:70px;">';
@@ -58,7 +60,7 @@ public static function fotoLogin($pEmail){
       
   if($consulta->rowCount() > 0){ 
         $fila = $consulta->fetch();
-        $foto = $fila['foto_usuario'];
+        $foto = $_SESSION['usuario_foto'];
         
         //'+ $value +'
         echo '<div class="user-inbox inbox"><div class="icon">

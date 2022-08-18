@@ -24,44 +24,11 @@ $consulta = MenuOpcion::TraerOpciones();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+	
     <link rel="stylesheet" href="./estilos/estilo.css">
 
 
-<script type="text/javascript">
-var cadena, cod, respuesta;  
-var tipo = /materia?s||carrera?s||oficio?s/i;
 
-var tener = RegExp("(inscribo|inscribir|inscripciones|inscripcion|anotar|anoto|anotarse|inscripción|inscribirse)");
-
-function evaluarPregunta(){
-    cadena = document.getElementById("data").value;
-    //cadena = cadena.toUpperCase();
-
-    document.getElementById("resultado1").innerHTML = tener.test(cadena);
-    document.getElementById("resultado2").innerHTML = tipo.test(cadena);
-
-    if(tipo.test(cadena)==true && tener.test(cadena)==true){
-        cod = 4;
-        alert(cod);
-        responder();
-    }
-        insertarPregunta(cadena);
-    } 
-function responder(){
-    var mensaje="";
- switch (cod){
-    case 4:
-    mensaje ="fijate vos";
-    break;    
- }
- document.getElementById("resultado").innerHTML = mensaje;
-       
-}
-function insertarPregunta(cadena){
-
-}
-</script>
 
 </head>
 
@@ -133,24 +100,17 @@ function insertarPregunta(cadena){
         });
     </script>
     
-    <p id="resultado" style="visibility:hidden;"></p>   
+       
     <div class="typing-field">
         
                 <form id="formPreg" enctype="multipart/form-data" action="back/insertarPreguntaHacer.php" method="POST">
                 <div class="input-data">
                     <input name="data" id="data" placeholder="Escribe aqui.." required>                    
-                    <button type="submit" id="send-btn" onclick="evaluarPregunta()">Enviar</button>
+                    <button type="submit" id="send-btn" >Enviar</button>
                     </div>   
                 </form> 
                    
     </div>
-    
-    <p style="visibility:hidden;" id="resultado1"></p>
-
-    <p style="visibility:hidden;" id="resultado2"></p>
-    
-    
-        
     
 
     

@@ -36,8 +36,73 @@ if ("0" != $_POST['text']) {
 
 }
 
-$run_query = mysqli_query($conn, $check_data) or die("Disculpa...no entendí , 
-queres hacer una pregunta?");
+$run_query = mysqli_query($conn, $check_data);
+
+if ($run_query == false){
+
+    $check_data =  "SELECT
+                    palabraClave 
+                    FROM
+    (
+    select palabraClave, 1 orden from (
+    select palabraClave from preguntas p 
+    where palabraClave  like '%.$getMesg.%'
+    limit 1) v1
+    union 
+    select palabraClave, 2 orden from (
+    select palabraClave from preguntas p 
+    order by LEVENSHTEIN('.$getMesg.', palabraClave) asc
+    limit 1) v2
+    order by orden
+    ) r
+    limit 1";
+
+    $run_query = mysqli_query($conn, $check_data);
+
+    if(mysqli_num_rows($run_query) > 0){
+        while
+        ($fetch_data = mysqli_fetch_array($run_query, MYSQLI_ASSOC)){
+            //var_dump ($run_query);
+            $palabra_original = $getMesg;
+            $palabra_actual = $fetch_data['palabraClave'];
+            $distancia_mas_corta = -1;
+
+            // Recorrer $palabras para encontrar la mas corta
+            if($palabra_original !== $palabra_actual) {
+
+                // Calcular la distancia entre la $palabra_original y la $palabra_actual
+                $lev = levenshtein($palabra_actual, $palabra_original);
+
+                // comprobar si son iguales (distancia 0)
+                if ($lev == 0) {
+                        // se trata de la palabra mas proxima (de hecho, las 2 coinciden)
+                        $palabra_mas_cercana = $palabra_actual;
+                        $distancia_mas_corta = 0;
+                        // salir porque ya se ha encontrado una coincidencia
+                
+                }
+
+                // si la distancia es menor que la siguiente distancia mas corta encontrada, o si 
+                // si no se ha encontrado la palabra con la distancia mas corta
+                if ($lev <= $distancia_mas_corta || $distancia_mas_corta < 0) {
+                    // establece la palabra mas cercana y la distancia mas corta
+                    $palabra_mas_cercana  = $palabra_actual;
+                    $distancia_mas_corta = $lev;
+                }
+            }
+
+                //echo "Palabra introducida: $palabra_original\n";
+                if ($distancia_mas_corta == 0) {
+                    echo "Se ha encontrado una coincidencia exacta: $palabra_mas_cercana\n";
+                    } else {
+                    echo "Quisiste decir . . . "."<br>";
+                    echo '<a href= "https://www.ibeltran.com.ar" target=”_blank” style="color:#FF0000">'.$palabra_mas_cercana ."?".'</a>'."<br>";
+                }
+        }
+    }
+
+}
+
 
 if(mysqli_num_rows($run_query) > 0){
     while

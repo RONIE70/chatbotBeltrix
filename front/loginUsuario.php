@@ -1,4 +1,5 @@
 <? 
+session_start();
 include_once ("../clases/AccesoDatos.php");
 include_once ("../clases/Usuario.php");
 $foto = Usuario::fotoLogin($pEmail);
