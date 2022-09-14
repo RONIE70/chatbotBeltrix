@@ -1,2 +1,0 @@
-# chatbotBeltrix
-proyecto Final 

@@ -16,10 +16,27 @@ class MenuOpcion{
       "SELECT * FROM menuOpciones WHERE idSuperior IS NULL");
         
       $consulta->execute(); 
-      $ArraysResultante= $consulta->fetchall(); 
+      $idSuperior= $consulta->fetchall(); 
                 
-      return $ArraysResultante;		
+      return $idSuperior;		
     }
+
+    public static function DecirOpciones($getMesg) {
+			
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta =$objetoAccesoDato->RetornarConsulta(
+        "SELECT
+                        idMenu,descripcion
+                    FROM 
+                        menuOpciones
+                    WHERE 
+                        idMenu = $getMesg");
+          
+        $consulta->execute(); 
+        $idMenuDecir= $consulta->fetchall(); 
+                  
+        return $idMenuDecir;		
+      }
 
     public static function TraerOpcionLogin(){
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 

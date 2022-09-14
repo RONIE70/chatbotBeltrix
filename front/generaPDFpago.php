@@ -1,5 +1,7 @@
 <?php
-require "fpdf/fpdf.php";
+define('FPDF_FONTPATH','C:xampp/htdocs/chatbotBeltrix2/fpdf/font');
+
+require ('../fpdf/fpdf.php');
 //include ('qrindex.php');
 
 
@@ -9,7 +11,7 @@ $pdf->SetFont('Arial','B',8);    //Letra Arial, negrita (Bold), tam. 20
 $textypos = 1;
 $pdf->setY(2);
 $pdf->setX(3);
-$pdf->Image('imagenes/beltran.png',5,5,7);
+$pdf->Image('../imagenes/beltran.png',5,5,7);
 $pdf->setX(5);
 $pdf->Ln(2);
 $pdf->Cell(5,$textypos,"COMPROBANTE DE PAGO");

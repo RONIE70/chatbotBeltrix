@@ -13,7 +13,16 @@ class Pregunta{
           "INSERT INTO `preguntas`(`descripcion`) VALUES (.'$cadena'.)");
           $consulta->execute();
           
-    }       
+    }   
+    
+    public static function encontrarPalabra() 
+    {
+          $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+          $consulta =$objetoAccesoDato->RetornarConsulta(
+          "INSERT INTO `preguntas`(`descripcion`) VALUES ()");
+          $consulta->execute();
+          
+    }   
 
 }
 
