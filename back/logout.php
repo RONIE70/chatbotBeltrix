@@ -1,17 +1,10 @@
-<?php   
-    
-    include_once("../clases/AccesoDatos.php");
+<?php
 
+session_start();
 
-    session_start();
+if ($_SESSION['superior']) {
+    session_destroy();
+    session_unset();
+}
 
-    if ($_SESSION['superior'])
-    {
-    	session_destroy();
-    	session_unset();
-    }
-
-    
-    header("location: ../index.php");
-
-?>
+header("location: ../index.php");
